@@ -1,5 +1,5 @@
 import { ArrowRight, Search } from 'lucide-react'
-import { useMemo, useState, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
 import { Container, Pill, Reveal, cx } from '../components/ui/primitives'
@@ -13,17 +13,15 @@ export default function People() {
 
   const usedArchetypes = archetypes.filter((a) => people.some((p) => p.archetype === a.id))
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return people.filter((p) => {
-      if (archetype !== 'all' && p.archetype !== archetype) return false
-      if (!q) return true
-      return [p.name, p.association, p.signatureOutfit, ...p.coreValues, getArchetype(p.archetype).name]
-        .join(' ')
-        .toLowerCase()
-        .includes(q)
-    })
-  }, [query, archetype])
+  const q = query.trim().toLowerCase()
+  const results = people.filter((p) => {
+    if (archetype !== 'all' && p.archetype !== archetype) return false
+    if (!q) return true
+    return [p.name, p.association, p.signatureOutfit, ...p.coreValues, getArchetype(p.archetype).name]
+      .join(' ')
+      .toLowerCase()
+      .includes(q)
+  })
 
   return (
     <>

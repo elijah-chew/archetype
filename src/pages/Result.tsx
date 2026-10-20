@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import FutureSelfSelector from '../components/FutureSelfSelector'
 import { FIND_HASH } from '../components/Navbar'
-import { Button, ButtonLink, CharacterImage, Container, Eyebrow, Pill, Reveal, cx } from '../components/ui/primitives'
+import { Button, ButtonLink, CharacterImage, CharacterStage, Container, Eyebrow, Pill, Reveal, cx } from '../components/ui/primitives'
 import { getArchetype } from '../data/archetypes'
 import { getPerson } from '../data/people'
 import { usePrefersReducedMotion } from '../lib/hooks'
@@ -16,13 +16,10 @@ export default function Result() {
   const [revealed, setRevealed] = useState(reducedMotion)
 
   useEffect(() => {
-    if (reducedMotion) {
-      setRevealed(true)
-      return
-    }
-    const t = window.setTimeout(() => setRevealed(true), 900)
+    if (revealed) return
+    const t = window.setTimeout(() => setRevealed(true), reducedMotion ? 0 : 900)
     return () => window.clearTimeout(t)
-  }, [reducedMotion])
+  }, [revealed, reducedMotion])
 
   if (!result) {
     return (
@@ -118,13 +115,18 @@ export default function Result() {
               </div>
 
               <div className="animate-fade-up stagger-3">
-                <div className="relative aspect-square rounded-[2rem] border border-brand-dark/10 bg-white/70 overflow-hidden max-w-md mx-auto lg:ml-auto">
-                  <CharacterImage src={primary.character} alt={`${primary.name} character`} className="absolute inset-[6%] w-[88%] h-[88%]" loading="eager" />
-                  <div className="absolute left-5 bottom-5">
-                    <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Your character</p>
-                    <p className="text-base text-brand-dark tracking-tight">{primary.name}</p>
-                  </div>
-                </div>
+                <CharacterStage
+                  src={primary.character}
+                  alt={`${primary.name} character`}
+                  loading="eager"
+                  className="max-w-md mx-auto lg:ml-auto"
+                  caption={
+                    <div>
+                      <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Your character</p>
+                      <p className="text-base sm:text-lg text-brand-dark tracking-tight">{primary.name}</p>
+                    </div>
+                  }
+                />
               </div>
             </div>
           )}

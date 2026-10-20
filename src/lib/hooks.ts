@@ -17,14 +17,11 @@ export function usePrefersReducedMotion(): boolean {
 /** Becomes true once the element has entered the viewport; never reverts. */
 export function useInView<T extends HTMLElement>(rootMargin = '0px 0px -10% 0px') {
   const ref = useRef<T | null>(null)
-  const [inView, setInView] = useState(false)
+  // Without IntersectionObserver there is nothing to wait for; reveal immediately.
+  const [inView, setInView] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window))
   useEffect(() => {
     const el = ref.current
     if (!el || inView) return
-    if (!('IntersectionObserver' in window)) {
-      setInView(true)
-      return
-    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {

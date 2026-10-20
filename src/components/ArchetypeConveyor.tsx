@@ -34,13 +34,20 @@ export default function ArchetypeConveyor() {
     if (!el) return
     let raf = 0
     let last = performance.now()
+    // Browsers round scrollLeft to whole pixels, so a per-frame increment under 1px would be
+    // lost. Track the exact position separately and only write the rounded value.
+    let pos = el.scrollLeft
     const tick = (now: number) => {
-      const dt = (now - last) / 1000
+      const dt = Math.min(0.05, (now - last) / 1000)
       last = now
       if (!paused && !drag.current.active) {
-        el.scrollLeft += SPEED_PX_PER_S * dt
+        if (Math.abs(el.scrollLeft - Math.round(pos)) > 1) pos = el.scrollLeft
+        pos += SPEED_PX_PER_S * dt
         const half = el.scrollWidth / 2
-        if (el.scrollLeft >= half) el.scrollLeft -= half
+        if (pos >= half) pos -= half
+        el.scrollLeft = Math.round(pos)
+      } else {
+        pos = el.scrollLeft
       }
       raf = requestAnimationFrame(tick)
     }

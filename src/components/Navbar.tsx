@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useBodyScrollLock } from '../lib/hooks'
 import { LogoMark, cx } from './ui/primitives'
 
@@ -15,7 +15,6 @@ export const FIND_HASH = '#find'
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -25,10 +24,6 @@ export default function Navbar() {
   }, [])
 
   useBodyScrollLock(open)
-
-  useEffect(() => {
-    setOpen(false)
-  }, [location.pathname, location.hash])
 
   useEffect(() => {
     if (!open) return
@@ -43,12 +38,15 @@ export default function Navbar() {
     cx('text-sm text-brand-dark tracking-wide hover:opacity-70 transition-opacity', isActive && 'underline underline-offset-8 decoration-brand-green/60')
 
   return (
-    <header
-      className={cx(
-        'fixed top-0 left-0 right-0 z-50 transition duration-300',
-        scrolled || open ? 'bg-brand-cream/90 backdrop-blur-md shadow-sm' : 'bg-transparent',
-      )}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* The blur lives on this inner bar, not the header: backdrop-filter would otherwise
+          become the containing block for the fixed full-screen overlay below. */}
+      <div
+        className={cx(
+          'relative z-50 transition duration-300',
+          scrolled || open ? 'bg-brand-cream/90 backdrop-blur-md shadow-sm' : 'bg-transparent',
+        )}
+      >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <nav className="relative flex items-center h-16 md:h-20" aria-label="Primary">
           <div className="hidden md:flex items-center gap-8 animate-fade-down stagger-1">
@@ -99,6 +97,7 @@ export default function Navbar() {
             </span>
           </button>
         </nav>
+      </div>
       </div>
 
       <div

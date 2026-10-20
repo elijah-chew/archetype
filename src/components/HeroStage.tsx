@@ -77,35 +77,39 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
       }}
     >
       <div
-        className="relative aspect-square rounded-[2rem] border border-brand-dark/10 bg-white/70 backdrop-blur-md shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]"
+        className="relative aspect-[4/5] rounded-[2rem] border border-brand-dark/10 bg-[#fff7ee] shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]"
         style={{ perspective: '1200px' }}
       >
-        <div
-          className="absolute inset-[6%] transition-transform duration-500 ease-out will-change-transform"
-          style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
-          aria-live="polite"
-        >
-          {showAll.map((id) => {
-            const a = getArchetype(id)
-            const isActive = id === activeId
-            return (
-              <CharacterImage
-                key={id}
-                src={a.character}
-                alt={isActive ? `${a.name} character` : ''}
-                loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
-                className={cx(
-                  'absolute inset-0 w-full h-full transition-opacity duration-700 ease-out',
-                  isActive ? 'opacity-100' : 'opacity-0',
-                )}
-              />
-            )
-          })}
+        {/* The renders are square and fill the top of the card; the bottom band holds the caption. */}
+        <div className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden">
+          <div
+            className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
+            style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
+            aria-live="polite"
+          >
+            {showAll.map((id) => {
+              const a = getArchetype(id)
+              const isActive = id === activeId
+              return (
+                <CharacterImage
+                  key={id}
+                  src={a.character}
+                  alt={isActive ? `${a.name} character` : ''}
+                  blend={false}
+                  loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
+                  className={cx(
+                    'absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out',
+                    isActive ? 'opacity-100' : 'opacity-0',
+                  )}
+                />
+              )
+            })}
+          </div>
         </div>
 
         <div
           key={`${activeId}-${cycle}`}
-          className="absolute inset-0 transition-transform duration-700 ease-out pointer-events-none"
+          className="absolute inset-x-0 top-0 aspect-square transition-transform duration-700 ease-out pointer-events-none"
           style={{ transform: pillTransform }}
         >
           {active.heroPills.map((pill, i) => (
@@ -131,10 +135,10 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
           ))}
         </div>
 
-        <div className="absolute left-5 bottom-5 right-5 flex items-end justify-between gap-4">
+        <div className="absolute inset-x-5 sm:inset-x-6 bottom-5 sm:bottom-6 flex items-end justify-between gap-4">
           <div className="min-w-0">
             <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Archetype</p>
-            <p key={activeId} className="text-base sm:text-lg text-brand-dark tracking-tight animate-fade-up">
+            <p key={activeId} className="text-lg sm:text-xl text-brand-dark tracking-tight animate-fade-up">
               {active.name}
             </p>
           </div>

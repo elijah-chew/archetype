@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { FIND_HASH } from '../components/Navbar'
-import { ButtonLink, CharacterImage, Container, Eyebrow, Facet, Pill, Reveal } from '../components/ui/primitives'
+import { ButtonLink, CharacterStage, Container, Eyebrow, Facet, Pill, Reveal } from '../components/ui/primitives'
 import { archetypeMap } from '../data/archetypes'
 import { getPath } from '../data/paths'
 import { getPerson } from '../data/people'
@@ -53,9 +53,18 @@ export default function ArchetypeDetail() {
               </div>
             </div>
             <div className="animate-fade-up stagger-4">
-              <div className="relative aspect-square rounded-[2rem] border border-brand-dark/10 bg-white/70 overflow-hidden max-w-md mx-auto lg:ml-auto">
-                <CharacterImage src={archetype.character} alt={`${archetype.name} character`} className="absolute inset-[6%] w-[88%] h-[88%]" loading="eager" />
-              </div>
+              <CharacterStage
+                src={archetype.character}
+                alt={`${archetype.name} character`}
+                loading="eager"
+                className="max-w-md mx-auto lg:ml-auto"
+                caption={
+                  <div>
+                    <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Visual language</p>
+                    <p className="text-base sm:text-lg text-brand-dark tracking-tight">{archetype.visualLanguage.slice(0, 2).join(' · ')}</p>
+                  </div>
+                }
+              />
             </div>
           </div>
         </Container>

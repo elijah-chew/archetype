@@ -167,9 +167,11 @@ interface CharacterImageProps {
   alt: string
   className?: string
   loading?: 'eager' | 'lazy'
+  /** Multiply-blend the render onto its surface. Turn off when the surface already matches the render background. */
+  blend?: boolean
 }
 
-export function CharacterImage({ src, alt, className, loading = 'lazy' }: CharacterImageProps) {
+export function CharacterImage({ src, alt, className, loading = 'lazy', blend = true }: CharacterImageProps) {
   return (
     <img
       src={src}
@@ -177,8 +179,44 @@ export function CharacterImage({ src, alt, className, loading = 'lazy' }: Charac
       loading={loading}
       decoding="async"
       draggable={false}
-      className={cx('character-img select-none object-contain', className)}
+      className={cx(blend && 'character-img', 'select-none object-contain', className)}
     />
+  )
+}
+
+/**
+ * Large framed character display. The render fills the top square; the band below it is
+ * reserved for a caption so nothing ever overlaps the figure. The surface color matches the
+ * renders' own background, so the image edge is invisible.
+ */
+export function CharacterStage({
+  src,
+  alt,
+  caption,
+  children,
+  className,
+  loading = 'lazy',
+}: {
+  src: string
+  alt: string
+  caption?: ReactNode
+  children?: ReactNode
+  className?: string
+  loading?: 'eager' | 'lazy'
+}) {
+  return (
+    <div
+      className={cx(
+        'relative aspect-[4/5] rounded-[2rem] border border-brand-dark/10 bg-[#fff7ee] overflow-hidden shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]',
+        className,
+      )}
+    >
+      <div className="absolute inset-x-0 top-0 aspect-square">
+        <CharacterImage src={src} alt={alt} blend={false} loading={loading} className="absolute inset-0 w-full h-full object-cover" />
+        {children}
+      </div>
+      {caption && <div className="absolute inset-x-0 bottom-0 h-[20%] flex items-end px-5 pb-5 sm:px-6 sm:pb-6">{caption}</div>}
+    </div>
   )
 }
 
