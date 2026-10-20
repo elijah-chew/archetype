@@ -41,7 +41,7 @@ src/
     hooks.ts             Reduced motion, in-view reveal, scroll lock, clipboard
   components/      Navbar, Hero, HeroStage (rotating character + pills), conveyor, how it works, result pieces
   pages/           Home, Archetypes, People, Paths, Test, Result, Plan, Style code, Presence
-public/characters/ 3D archetype character PNG cutouts (transparent background, one per archetype). To regenerate from new source art: `python3 scripts/cutout-characters.py` (requires `pip install rembg pillow onnxruntime`).
+public/characters/ 3D-style archetype character renders (one per archetype)
 ```
 
 ### Routes

@@ -13,7 +13,7 @@ export const archetypes: Archetype[] = [
     pills: ['Ships early', 'Focused', 'Minimal uniform'],
     examplePeople: ['mark-zuckerberg', 'elon-musk', 'tim-cook'],
     paths: ['ai-builder', 'startup-founder', 'product-designer'],
-    character: '/characters/builder.png',
+    character: '/characters/builder.jpg',
     heroPills: [
       { label: 'Gray Gap hoodie', side: 'left', tx: 40, ty: 44 },
       { label: 'Ships early', side: 'right', tx: 55, ty: 28 },
@@ -53,7 +53,7 @@ export const archetypes: Archetype[] = [
     pills: ['Big ideas', 'Long-term bets', 'Original thinker'],
     examplePeople: ['steve-jobs', 'elon-musk'],
     paths: ['startup-founder', 'researcher'],
-    character: '/characters/visionary.png',
+    character: '/characters/visionary.jpg',
     heroPills: [
       { label: 'Big ideas', side: 'left', tx: 42, ty: 24 },
       { label: 'Future focus', side: 'right', tx: 57, ty: 36 },
@@ -89,7 +89,7 @@ export const archetypes: Archetype[] = [
     pills: ['Expressive', 'Own world', 'Creative range'],
     examplePeople: ['pharrell-williams', 'tyler-the-creator', 'rihanna'],
     paths: ['creative-director', 'content-creator'],
-    character: '/characters/creator.png',
+    character: '/characters/creator.jpg',
     heroPills: [
       { label: 'Paintbrush', side: 'right', tx: 58, ty: 64 },
       { label: 'Expressive', side: 'left', tx: 42, ty: 24 },
@@ -129,7 +129,7 @@ export const archetypes: Archetype[] = [
     pills: ['Discipline', 'Consistency', 'Longevity'],
     examplePeople: ['cristiano-ronaldo'],
     paths: ['performance-athlete'],
-    character: '/characters/athlete.png',
+    character: '/characters/athlete.jpg',
     heroPills: [
       { label: 'Track jacket', side: 'left', tx: 40, ty: 44 },
       { label: 'Discipline', side: 'right', tx: 56, ty: 28 },
@@ -167,7 +167,7 @@ export const archetypes: Archetype[] = [
     pills: ['Deep thinking', 'Calm authority', 'Grounded'],
     examplePeople: ['michelle-obama', 'tim-cook', 'oprah-winfrey'],
     paths: ['researcher', 'operator'],
-    character: '/characters/sage.png',
+    character: '/characters/sage.jpg',
     heroPills: [
       { label: 'Glasses', side: 'right', tx: 55, ty: 24 },
       { label: 'Deep thinking', side: 'left', tx: 42, ty: 24 },
@@ -207,7 +207,7 @@ export const archetypes: Archetype[] = [
     pills: ['Independent', 'Rule breaker', 'Original'],
     examplePeople: ['rihanna', 'tyler-the-creator', 'elon-musk'],
     paths: ['creative-director', 'startup-founder'],
-    character: '/characters/maverick.png',
+    character: '/characters/maverick.jpg',
     heroPills: [
       { label: 'Oversized jacket', side: 'left', tx: 40, ty: 44 },
       { label: 'Independent', side: 'right', tx: 56, ty: 28 },
@@ -243,7 +243,7 @@ export const archetypes: Archetype[] = [
     pills: ['Presence', 'Control', 'Influence'],
     examplePeople: ['rihanna', 'oprah-winfrey', 'zendaya'],
     paths: ['content-creator', 'creative-director'],
-    character: '/characters/icon.png',
+    character: '/characters/icon.jpg',
     heroPills: [
       { label: 'Sharp tailoring', side: 'left', tx: 42, ty: 48 },
       { label: 'Presence', side: 'right', tx: 56, ty: 28 },
@@ -266,7 +266,7 @@ export const archetypes: Archetype[] = [
     pills: ['Generous', 'Community', 'Warm'],
     examplePeople: ['oprah-winfrey', 'michelle-obama', 'pharrell-williams'],
     paths: ['content-creator', 'operator'],
-    character: '/characters/connector.png',
+    character: '/characters/connector.jpg',
     heroPills: [
       { label: 'Open hand', side: 'right', tx: 58, ty: 58 },
       { label: 'Generous', side: 'left', tx: 42, ty: 24 },
@@ -289,7 +289,7 @@ export const archetypes: Archetype[] = [
     pills: ['Taste', 'Restraint', 'Detail'],
     examplePeople: ['zendaya', 'pharrell-williams', 'steve-jobs'],
     paths: ['creative-director', 'product-designer'],
-    character: '/characters/aesthete.png',
+    character: '/characters/aesthete.jpg',
     heroPills: [
       { label: 'Linen', side: 'left', tx: 42, ty: 48 },
       { label: 'Taste', side: 'right', tx: 56, ty: 28 },
@@ -312,7 +312,7 @@ export const archetypes: Archetype[] = [
     pills: ['Reliable', 'Clear', 'Executes'],
     examplePeople: ['tim-cook', 'michelle-obama'],
     paths: ['operator', 'startup-founder'],
-    character: '/characters/operator.png',
+    character: '/characters/operator.jpg',
     heroPills: [
       { label: 'Quarter-zip', side: 'left', tx: 42, ty: 48 },
       { label: 'Reliable', side: 'right', tx: 56, ty: 28 },
@@ -335,7 +335,7 @@ export const archetypes: Archetype[] = [
     pills: ['Curious', 'Open', 'Adventurous'],
     examplePeople: ['elon-musk', 'pharrell-williams'],
     paths: ['researcher', 'content-creator'],
-    character: '/characters/explorer.png',
+    character: '/characters/explorer.jpg',
     heroPills: [
       { label: 'Utility jacket', side: 'left', tx: 42, ty: 48 },
       { label: 'Curious', side: 'right', tx: 56, ty: 28 },
@@ -358,7 +358,7 @@ export const archetypes: Archetype[] = [
     pills: ['Empathy', 'Service', 'Steady'],
     examplePeople: ['michelle-obama', 'oprah-winfrey'],
     paths: ['operator', 'content-creator'],
-    character: '/characters/caregiver.png',
+    character: '/characters/caregiver.jpg',
     heroPills: [
       { label: 'Soft knit', side: 'left', tx: 42, ty: 48 },
       { label: 'Empathy', side: 'right', tx: 56, ty: 28 },
