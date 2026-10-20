@@ -68,7 +68,7 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
   return (
     <div
       ref={stageRef}
-      className="relative w-full max-w-[520px] mx-auto lg:mx-0 lg:ml-auto"
+      className="relative w-full max-w-[min(100%,560px)] sm:max-w-[600px] lg:max-w-[680px] mx-auto lg:mx-0 lg:ml-auto"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -87,23 +87,28 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
             style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
             aria-live="polite"
           >
-            {showAll.map((id) => {
-              const a = getArchetype(id)
-              const isActive = id === activeId
-              return (
-                <CharacterImage
-                  key={id}
-                  src={a.character}
-                  alt={isActive ? `${a.name} character` : ''}
-                  blend={false}
-                  loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
-                  className={cx(
-                    'absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out',
-                    isActive ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-              )
-            })}
+            {/* Renders ship with generous cream margins; scale up so the figure reads larger in-frame. */}
+            <div className="absolute inset-0 flex items-end justify-center pointer-events-none">
+              <div className="relative w-full h-[108%] origin-bottom scale-[1.38] sm:scale-[1.42] lg:scale-[1.48]">
+                {showAll.map((id) => {
+                  const a = getArchetype(id)
+                  const isActive = id === activeId
+                  return (
+                    <CharacterImage
+                      key={id}
+                      src={a.character}
+                      alt={isActive ? `${a.name} character` : ''}
+                      blend={false}
+                      loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
+                      className={cx(
+                        'absolute inset-0 w-full h-full object-contain object-bottom transition-opacity duration-700 ease-out',
+                        isActive ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
 

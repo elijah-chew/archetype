@@ -70,7 +70,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto pt-28 md:pt-36 pb-16 md:pb-24 px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] gap-12 lg:gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-12 lg:gap-8 xl:gap-10 items-start">
           <div className="flex flex-col items-start text-left">
             <Link
               to="/archetypes"
