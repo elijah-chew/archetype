@@ -1,10 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getArchetype, heroArchetypeIds } from '../data/archetypes'
+import { getCharacterSpec } from '../data/characterSpecs'
 import type { ArchetypeId } from '../data/types'
 import { usePrefersReducedMotion } from '../lib/hooks'
+import type { CharacterScene } from './hero3d/characterScene'
 import { CharacterImage, cx } from './ui/primitives'
 
 const DWELL_MS = 5000
+const CARD_BG = '#fff7ee'
+
+type SceneStatus = 'loading' | 'ready' | 'fallback'
+
+function webglAvailable() {
+  try {
+    const c = document.createElement('canvas')
+    return Boolean(c.getContext('webgl2') || c.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
 
 interface HeroStageProps {
   /** When set, the stage shows this archetype and stops rotating. */
@@ -18,13 +32,61 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
   const [cycle, setCycle] = useState(0)
   const [paused, setPaused] = useState(false)
   const [pointer, setPointer] = useState({ x: 0, y: 0 })
+  const [sceneStatus, setSceneStatus] = useState<SceneStatus>(() => (webglAvailable() ? 'loading' : 'fallback'))
+  const [booted, setBooted] = useState(false)
+  const reducedMotionRef = useRef(reducedMotion)
   const stageRef = useRef<HTMLDivElement | null>(null)
+  const squareRef = useRef<HTMLDivElement | null>(null)
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const sceneRef = useRef<CharacterScene | null>(null)
 
   const pinnedIndex = pinned ? heroArchetypeIds.indexOf(pinned) : -1
   const rotating = pinnedIndex === -1
   const activeId = rotating ? heroArchetypeIds[index] : pinned!
   const active = getArchetype(activeId)
   const showAll = pinnedIndex === -1 ? heroArchetypeIds : [...new Set([...heroArchetypeIds, pinned!])]
+  const use3d = sceneStatus !== 'fallback'
+
+  // Boot the Three.js scene once; `three` stays out of the main bundle.
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const host = squareRef.current
+    if (!canvas || !host) return
+    let cancelled = false
+    let scene: CharacterScene | null = null
+    import('./hero3d/characterScene')
+      .then(({ createCharacterScene }) => {
+        if (cancelled) return
+        scene = createCharacterScene({
+          canvas,
+          host,
+          reducedMotion: reducedMotionRef.current,
+          background: CARD_BG,
+          onReady: () => setSceneStatus('ready'),
+        })
+        sceneRef.current = scene
+        setBooted(true)
+      })
+      .catch(() => {
+        if (!cancelled) setSceneStatus('fallback')
+      })
+    return () => {
+      cancelled = true
+      scene?.destroy()
+      sceneRef.current = null
+    }
+    // Created once; reducedMotion changes are pushed through setReducedMotion below.
+  }, [])
+
+  useEffect(() => {
+    reducedMotionRef.current = reducedMotion
+    sceneRef.current?.setReducedMotion(reducedMotion)
+  }, [reducedMotion])
+
+  useEffect(() => {
+    if (!booted) return
+    sceneRef.current?.setCharacter(getCharacterSpec(active.id), active.model)
+  }, [active.id, active.model, booted])
 
   const goTo = useCallback(
     (next: number) => {
@@ -81,30 +143,51 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
         style={{ perspective: '1200px' }}
       >
         {/* The renders are square and fill the top of the card; the bottom band holds the caption. */}
-        <div className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden">
-          <div
-            className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
-            style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
-            aria-live="polite"
-          >
-            {showAll.map((id) => {
-              const a = getArchetype(id)
-              const isActive = id === activeId
-              return (
-                <CharacterImage
-                  key={id}
-                  src={a.character}
-                  alt={isActive ? `${a.name} character` : ''}
-                  blend={false}
-                  loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
-                  className={cx(
-                    'absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out',
-                    isActive ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-              )
-            })}
-          </div>
+        <div ref={squareRef} className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden">
+          {use3d && (
+            <>
+              <canvas
+                ref={canvasRef}
+                className={cx(
+                  'absolute inset-0 w-full h-full block transition-opacity duration-700 ease-out',
+                  sceneStatus === 'ready' ? 'opacity-100' : 'opacity-0',
+                )}
+                style={{ touchAction: 'pan-y' }}
+                role="img"
+                aria-label={`${active.name} character`}
+              />
+              {sceneStatus === 'loading' && (
+                <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
+                  <span className="h-10 w-10 rounded-full border-2 border-brand-green/20 border-t-brand-green animate-spin" />
+                </div>
+              )}
+            </>
+          )}
+          {!use3d && (
+            <div
+              className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
+              style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
+              aria-live="polite"
+            >
+              {showAll.map((id) => {
+                const a = getArchetype(id)
+                const isActive = id === activeId
+                return (
+                  <CharacterImage
+                    key={id}
+                    src={a.character}
+                    alt={isActive ? `${a.name} character` : ''}
+                    blend={false}
+                    loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
+                    className={cx(
+                      'absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out',
+                      isActive ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                )
+              })}
+            </div>
+          )}
         </div>
 
         <div

@@ -22,6 +22,32 @@ export interface AnchoredPill {
   ty: number
 }
 
+export type CharacterProp =
+  | 'none'
+  | 'toolbelt'
+  | 'longcoat'
+  | 'beret'
+  | 'headband'
+  | 'glasses'
+  | 'jacket'
+
+/**
+ * Colour and prop recipe for the procedural 3D hero character.
+ * All colours are CSS hex strings.
+ */
+export interface CharacterSpec {
+  skin: string
+  hair: string
+  /** Hair silhouette on the sphere head. */
+  hairStyle: 'short' | 'swept' | 'curly' | 'buzz' | 'long' | 'cap'
+  top: string
+  bottom: string
+  shoes: string
+  /** Eye ring, rim light and glow colour. */
+  accent: string
+  prop: CharacterProp
+}
+
 export interface Archetype {
   id: ArchetypeId
   name: string
@@ -38,6 +64,11 @@ export interface Archetype {
   /** Path ids from the paths database. */
   paths: string[]
   character: string
+  /**
+   * Optional URL of a sculpted GLB for the 3D hero. When set it replaces the procedural figure.
+   * Nodes named `Head`, `Eye_L`, `Eye_R`, `Arm_L`, `Arm_R` get head/eye/arm tracking.
+   */
+  model?: string
   /** Pills shown around the character in the hero. */
   heroPills: AnchoredPill[]
   /** Keywords used by the mock analyzer to score free-text descriptions. */
