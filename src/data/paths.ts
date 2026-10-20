@@ -1,0 +1,102 @@
+import type { Path } from './types'
+
+export const paths: Path[] = [
+  {
+    id: 'ai-builder',
+    name: 'AI builder',
+    archetype: 'builder',
+    whoFor: 'People who want to make things with models, not just talk about them.',
+    identityStatement: 'I turn new capabilities into tools people actually use.',
+    skills: ['Python and TypeScript', 'Prompting and evaluation', 'Data pipelines', 'Shipping a product end to end', 'Writing about what you built'],
+    firstProjects: [
+      'A small assistant that solves one real problem for ten people you know',
+      'A public evaluation of three models on a task you care about',
+      'A weekly build log',
+    ],
+    people: ['mark-zuckerberg', 'elon-musk'],
+    styleDirection: 'Technical neutrals. Gray hoodie, black trousers, clean sneakers. Nothing that competes with the work.',
+  },
+  {
+    id: 'startup-founder',
+    name: 'Startup founder',
+    archetype: 'builder',
+    whoFor: 'People who want to own the outcome and are comfortable with ambiguity.',
+    identityStatement: 'I find a problem worth years of my life and build the company that solves it.',
+    skills: ['Customer discovery', 'Selling before building', 'Hiring', 'Fundraising narrative', 'Prioritization under pressure'],
+    firstProjects: ['Twenty customer conversations in two weeks', 'A landing page and a waitlist', 'One paying customer'],
+    people: ['mark-zuckerberg', 'steve-jobs', 'elon-musk'],
+    styleDirection: 'A repeatable uniform you never think about. One silhouette, two colors, done.',
+  },
+  {
+    id: 'creative-director',
+    name: 'Creative director',
+    archetype: 'creator',
+    whoFor: 'People with taste who want to shape how a brand, product, or artist is seen.',
+    identityStatement: 'I give ideas a visual world and keep every surface coherent.',
+    skills: ['Art direction', 'Typography and color', 'Brief writing', 'Leading designers and photographers', 'Cultural research'],
+    firstProjects: ['Rebrand a small local business for free', 'A moodboard series published weekly', 'Art-direct one photo shoot'],
+    people: ['pharrell-williams', 'tyler-the-creator', 'rihanna'],
+    styleDirection: 'A signature element that is unmistakably yours, inside an otherwise disciplined wardrobe.',
+  },
+  {
+    id: 'performance-athlete',
+    name: 'Performance athlete',
+    archetype: 'athlete',
+    whoFor: 'People who want to find out how good they can get at one physical discipline.',
+    identityStatement: 'I show up every day and let the compounding do the talking.',
+    skills: ['Periodized training', 'Recovery and sleep', 'Nutrition basics', 'Mental performance', 'Tracking and review'],
+    firstProjects: ['A twelve-week program with a measurable goal', 'A recovery routine you actually follow', 'One competition entry'],
+    people: ['cristiano-ronaldo'],
+    styleDirection: 'Fitted, functional, monochrome. Technical fabrics kept spotless.',
+  },
+  {
+    id: 'researcher',
+    name: 'Researcher',
+    archetype: 'sage',
+    whoFor: 'People who want to understand something deeply enough to move the field.',
+    identityStatement: 'I ask precise questions and follow the evidence further than anyone else.',
+    skills: ['Reading papers fast', 'Experimental design', 'Statistics', 'Clear technical writing', 'Reproducible code'],
+    firstProjects: ['Reproduce one paper and publish the notes', 'A literature review on a narrow question', 'A talk at a local meetup'],
+    people: ['michelle-obama', 'steve-jobs'],
+    styleDirection: 'Quiet tailoring and soft layers. Glasses as the signature. Nothing loud.',
+  },
+  {
+    id: 'product-designer',
+    name: 'Product designer',
+    archetype: 'aesthete',
+    whoFor: 'People who care how things feel in the hand and on the screen.',
+    identityStatement: 'I make complex things feel obvious.',
+    skills: ['Interaction design', 'Prototyping', 'Design systems', 'User research', 'Working closely with engineers'],
+    firstProjects: ['Redesign one flow in an app you use daily and write up why', 'A small design system for a side project', 'Three case studies'],
+    people: ['steve-jobs', 'zendaya'],
+    styleDirection: 'Neutral palette, considered textures, one fine detail. The outfit is a product too.',
+  },
+  {
+    id: 'content-creator',
+    name: 'Content creator',
+    archetype: 'icon',
+    whoFor: 'People who want to build an audience around a point of view.',
+    identityStatement: 'I show my work and my taste consistently enough that people come back.',
+    skills: ['Writing hooks', 'Editing video or photo', 'Consistency systems', 'Audience understanding', 'Monetization basics'],
+    firstProjects: ['Thirty posts in thirty days on one theme', 'A visual template you can reuse', 'One collaboration'],
+    people: ['oprah-winfrey', 'zendaya', 'tyler-the-creator'],
+    styleDirection: 'A recognizable visual signature: one palette, one framing, one recurring item.',
+  },
+  {
+    id: 'operator',
+    name: 'Operator',
+    archetype: 'operator',
+    whoFor: 'People who like making ambitious plans actually happen.',
+    identityStatement: 'I turn vision into systems and systems into results.',
+    skills: ['Project management', 'Finance basics', 'Process design', 'Hiring and onboarding', 'Clear written communication'],
+    firstProjects: ['Run operations for a student club or small team', 'Document and fix one broken process', 'A weekly metrics review'],
+    people: ['tim-cook', 'michelle-obama'],
+    styleDirection: 'Understated and exact. Navy, charcoal, white. Everything fits properly.',
+  },
+]
+
+export const pathMap: Record<string, Path> = Object.fromEntries(paths.map((p) => [p.id, p]))
+
+export function getPath(id: string): Path | undefined {
+  return pathMap[id]
+}
