@@ -142,7 +142,7 @@ export default function Hero() {
 
             <Link
               to="/test"
-              className="mt-5 inline-flex items-center gap-1.5 text-sm text-brand-dark/80 hover:text-brand-dark underline-offset-4 hover:underline animate-fade-up stagger-6"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-brand-dark/10 bg-white/60 backdrop-blur-sm px-4 py-2 text-sm text-brand-dark hover:bg-white/85 transition-colors animate-fade-up stagger-6"
             >
               Not sure? Take the 60-second archetype test
               <ArrowRight className="w-3.5 h-3.5" aria-hidden />
