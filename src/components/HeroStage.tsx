@@ -62,7 +62,7 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
 
   const characterTransform = reducedMotion
     ? undefined
-    : `translate3d(${pointer.x * 10}px, ${pointer.y * 6}px, 0) rotateY(${pointer.x * 7}deg) rotateX(${-pointer.y * 4}deg)`
+    : `translate3d(${pointer.x * 8}px, ${pointer.y * 5}px, 0) rotateY(${pointer.x * 6}deg) rotateX(${-pointer.y * 3}deg)`
   const pillTransform = reducedMotion ? undefined : `translate3d(${pointer.x * 4}px, ${pointer.y * 3}px, 0)`
 
   return (
@@ -77,11 +77,11 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
       }}
     >
       <div
-        className="relative aspect-[4/5] rounded-[2rem] border border-brand-dark/10 bg-[#fff7ee] shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]"
+        className="relative aspect-[4/5] rounded-[2rem] border border-white/50 bg-white/40 backdrop-blur-xl shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]"
         style={{ perspective: '1200px' }}
       >
         {/* The renders are square and fill the top of the card; the bottom band holds the caption. */}
-        <div className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden">
+        <div className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden bg-white/25">
           <div
             className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
             style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
@@ -89,7 +89,7 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
           >
             {/* Renders ship with generous cream margins; scale up so the figure reads larger in-frame. */}
             <div className="absolute inset-0 flex items-end justify-center pointer-events-none">
-              <div className="relative w-full h-[108%] origin-bottom scale-[1.38] sm:scale-[1.42] lg:scale-[1.48]">
+              <div className="relative w-full h-[108%] origin-bottom scale-[1.44] sm:scale-[1.48] lg:scale-[1.54]">
                 {showAll.map((id) => {
                   const a = getArchetype(id)
                   const isActive = id === activeId
@@ -140,7 +140,11 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
           ))}
         </div>
 
-        <div className="absolute inset-x-5 sm:inset-x-6 bottom-5 sm:bottom-6 flex items-end justify-between gap-4">
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[22%] rounded-b-[2rem] bg-gradient-to-t from-white/55 via-white/35 to-transparent backdrop-blur-[2px]"
+          aria-hidden
+        />
+        <div className="absolute inset-x-5 sm:inset-x-6 bottom-5 sm:bottom-6 flex items-end justify-between gap-4 z-[1]">
           <div className="min-w-0">
             <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Archetype</p>
             <p key={activeId} className="text-lg sm:text-xl text-brand-dark tracking-tight animate-fade-up">
