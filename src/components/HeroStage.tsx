@@ -98,7 +98,7 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
                   blend={false}
                   loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
                   className={cx(
-                    'absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out',
+                    'absolute inset-0 w-full h-full object-contain object-bottom transition-opacity duration-700 ease-out',
                     isActive ? 'opacity-100' : 'opacity-0',
                   )}
                 />

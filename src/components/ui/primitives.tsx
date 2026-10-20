@@ -171,7 +171,7 @@ interface CharacterImageProps {
   blend?: boolean
 }
 
-export function CharacterImage({ src, alt, className, loading = 'lazy', blend = true }: CharacterImageProps) {
+export function CharacterImage({ src, alt, className, loading = 'lazy', blend = false }: CharacterImageProps) {
   return (
     <img
       src={src}
@@ -212,7 +212,7 @@ export function CharacterStage({
       )}
     >
       <div className="absolute inset-x-0 top-0 aspect-square">
-        <CharacterImage src={src} alt={alt} blend={false} loading={loading} className="absolute inset-0 w-full h-full object-cover" />
+        <CharacterImage src={src} alt={alt} loading={loading} className="absolute inset-0 w-full h-full object-contain object-bottom" />
         {children}
       </div>
       {caption && <div className="absolute inset-x-0 bottom-0 h-[20%] flex items-end px-5 pb-5 sm:px-6 sm:pb-6">{caption}</div>}
