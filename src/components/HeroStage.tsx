@@ -62,13 +62,13 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
 
   const characterTransform = reducedMotion
     ? undefined
-    : `translate3d(${pointer.x * 8}px, ${pointer.y * 5}px, 0) rotateY(${pointer.x * 6}deg) rotateX(${-pointer.y * 3}deg)`
-  const pillTransform = reducedMotion ? undefined : `translate3d(${pointer.x * 4}px, ${pointer.y * 3}px, 0)`
+    : `translate3d(${pointer.x * 6}px, ${pointer.y * 4}px, 0) rotateY(${pointer.x * 5}deg) rotateX(${-pointer.y * 2.5}deg)`
+  const pillTransform = reducedMotion ? undefined : `translate3d(${pointer.x * 3}px, ${pointer.y * 2}px, 0)`
 
   return (
     <div
       ref={stageRef}
-      className="relative w-full max-w-[min(100%,560px)] sm:max-w-[600px] lg:max-w-[680px] mx-auto lg:mx-0 lg:ml-auto"
+      className="relative w-full max-w-[min(100%,17.5rem)] sm:max-w-[19rem] lg:max-w-[21rem] mx-auto lg:mx-0 lg:ml-auto"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -76,45 +76,35 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false)
       }}
     >
-      <div
-        className="relative aspect-[4/5] rounded-[2rem] border border-white/50 bg-white/40 backdrop-blur-xl shadow-[0_30px_80px_-40px_rgba(45,58,46,0.35)]"
-        style={{ perspective: '1200px' }}
-      >
-        {/* The renders are square and fill the top of the card; the bottom band holds the caption. */}
-        <div className="absolute inset-x-0 top-0 aspect-square rounded-t-[2rem] overflow-hidden bg-white/25">
-          <div
-            className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
-            style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
-            aria-live="polite"
-          >
-            {/* Inset frame + modest scale: larger than raw contain, but clipped inside the square. */}
-            <div className="absolute inset-x-[4%] top-[10%] bottom-[5%] pointer-events-none">
-              <div className="relative h-full w-full origin-bottom scale-[1.14] sm:scale-[1.18] lg:scale-[1.22]">
-                {showAll.map((id) => {
-                  const a = getArchetype(id)
-                  const isActive = id === activeId
-                  return (
-                    <CharacterImage
-                      key={id}
-                      src={a.character}
-                      alt={isActive ? `${a.name} character` : ''}
-                      blend={false}
-                      loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
-                      className={cx(
-                        'absolute inset-0 h-full w-full object-contain object-bottom transition-opacity duration-700 ease-out',
-                        isActive ? 'opacity-100' : 'opacity-0',
-                      )}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </div>
+      {/* No panel behind the figure — multiply blends the render’s cream plate into the hero video. */}
+      <div className="relative aspect-square" style={{ perspective: '1200px' }}>
+        <div
+          className="absolute inset-[14%] transition-transform duration-500 ease-out will-change-transform"
+          style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
+          aria-live="polite"
+        >
+          {showAll.map((id) => {
+            const a = getArchetype(id)
+            const isActive = id === activeId
+            return (
+              <CharacterImage
+                key={id}
+                src={a.character}
+                alt={isActive ? `${a.name} character` : ''}
+                blend
+                loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
+                className={cx(
+                  'absolute inset-0 h-full w-full object-contain object-bottom transition-opacity duration-700 ease-out',
+                  isActive ? 'opacity-100' : 'opacity-0',
+                )}
+              />
+            )
+          })}
         </div>
 
         <div
           key={`${activeId}-${cycle}`}
-          className="absolute inset-x-0 top-0 aspect-square transition-transform duration-700 ease-out pointer-events-none"
+          className="absolute inset-0 transition-transform duration-700 ease-out pointer-events-none"
           style={{ transform: pillTransform }}
         >
           {active.heroPills.map((pill, i) => (
@@ -132,48 +122,44 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
               }
             >
               <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand-green shrink-0" />
-              <span aria-hidden className="h-px w-5 sm:w-8 md:w-10 bg-brand-green/50 shrink-0" />
-              <span className="inline-flex items-center rounded-full border border-brand-green/40 bg-white/85 backdrop-blur-sm px-3 py-1 text-[11px] sm:text-xs text-brand-dark whitespace-nowrap shadow-sm font-helvetica-neue">
+              <span aria-hidden className="h-px w-4 sm:w-6 bg-brand-green/50 shrink-0" />
+              <span className="inline-flex items-center rounded-full border border-brand-green/40 bg-white/85 backdrop-blur-sm px-2.5 py-0.5 text-[10px] sm:text-[11px] text-brand-dark whitespace-nowrap shadow-sm font-helvetica-neue">
                 {pill.label}
               </span>
             </div>
           ))}
         </div>
+      </div>
 
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[22%] rounded-b-[2rem] bg-gradient-to-t from-white/55 via-white/35 to-transparent backdrop-blur-[2px]"
-          aria-hidden
-        />
-        <div className="absolute inset-x-5 sm:inset-x-6 bottom-5 sm:bottom-6 flex items-end justify-between gap-4 z-[1]">
-          <div className="min-w-0">
-            <p className="text-[11px] tracking-[0.25em] uppercase text-brand-dark/45">Archetype</p>
-            <p key={activeId} className="text-lg sm:text-xl text-brand-dark tracking-tight animate-fade-up">
-              {active.name}
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Choose archetype">
-            {heroArchetypeIds.map((id, i) => {
-              const selected = id === activeId
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  aria-label={getArchetype(id).name}
-                  onClick={() => goTo(i)}
-                  className={cx(
-                    'h-2 rounded-full transition-all duration-300',
-                    selected ? 'w-5 bg-brand-dark' : 'w-2 bg-brand-dark/25 hover:bg-brand-dark/50',
-                  )}
-                />
-              )
-            })}
-          </div>
+      <div className="mt-3 flex items-end justify-between gap-3 px-0.5">
+        <div className="min-w-0">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-brand-dark/50">Archetype</p>
+          <p key={activeId} className="text-base sm:text-lg text-brand-dark tracking-tight animate-fade-up drop-shadow-[0_1px_12px_rgba(250,248,245,0.85)]">
+            {active.name}
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0" role="tablist" aria-label="Choose archetype">
+          {heroArchetypeIds.map((id, i) => {
+            const selected = id === activeId
+            return (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                aria-label={getArchetype(id).name}
+                onClick={() => goTo(i)}
+                className={cx(
+                  'h-1.5 rounded-full transition-all duration-300',
+                  selected ? 'w-4 bg-brand-dark' : 'w-1.5 bg-brand-dark/30 hover:bg-brand-dark/50',
+                )}
+              />
+            )
+          })}
         </div>
       </div>
 
-      <div className="mt-3 h-px w-full bg-brand-dark/10 overflow-hidden" aria-hidden>
+      <div className="mt-2 h-px w-full bg-brand-dark/15 overflow-hidden" aria-hidden>
         {rotating && (
           <div
             key={`${index}-${cycle}`}
