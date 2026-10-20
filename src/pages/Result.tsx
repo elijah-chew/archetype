@@ -10,7 +10,8 @@ import { usePrefersReducedMotion } from '../lib/hooks'
 import { useSession } from '../lib/session'
 
 export default function Result() {
-  const { result, futureSelf, setFutureSelf, reset } = useSession()
+  const { result, futureSelf, setFutureSelf, reset, onboarding } = useSession()
+  const firstName = onboarding.name.trim()
   const navigate = useNavigate()
   const reducedMotion = usePrefersReducedMotion()
   const [revealed, setRevealed] = useState(reducedMotion)
@@ -58,7 +59,7 @@ export default function Result() {
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-12 items-start">
               <div className="flex flex-col items-start">
-                <Eyebrow className="mb-5 animate-fade-up stagger-1">Your archetype</Eyebrow>
+                <Eyebrow className="mb-5 animate-fade-up stagger-1">{firstName ? `${firstName}, your archetype` : 'Your archetype'}</Eyebrow>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl text-brand-dark leading-[1.02] tracking-tight animate-fade-up stagger-2">{primary.name}</h1>
                 <p className="mt-5 text-xl md:text-2xl text-brand-dark/85 leading-snug max-w-xl animate-fade-up stagger-3">{result.identityStatement}</p>
                 <div className="mt-6 flex flex-wrap items-center gap-2 animate-fade-up stagger-4">

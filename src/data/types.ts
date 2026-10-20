@@ -173,6 +173,16 @@ export interface GeneratedPlan {
   modeledOn?: string
 }
 
+export interface OnboardingAnswers {
+  name: string
+  stage: string | null
+  age: string | null
+  goal: string | null
+  /** Optional one-sentence self description; empty when skipped. */
+  description: string
+  completedAt: number | null
+}
+
 export interface TestQuestion {
   id: string
   prompt: string

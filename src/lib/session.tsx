@@ -1,7 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { ArchetypeResult, FutureSelf, GeneratedPlan } from '../data/types'
+import type { ArchetypeResult, FutureSelf, GeneratedPlan, OnboardingAnswers } from '../data/types'
+
+export const emptyOnboarding: OnboardingAnswers = {
+  name: '',
+  stage: null,
+  age: null,
+  goal: null,
+  description: '',
+  completedAt: null,
+}
 
 interface SessionState {
+  onboarding: OnboardingAnswers
   result: ArchetypeResult | null
   futureSelf: FutureSelf | null
   plan: GeneratedPlan | null
@@ -11,6 +21,7 @@ interface SessionState {
 }
 
 interface SessionValue extends SessionState {
+  updateOnboarding: (patch: Partial<OnboardingAnswers>) => void
   setResult: (result: ArchetypeResult | null) => void
   setFutureSelf: (self: FutureSelf | null) => void
   setPlan: (plan: GeneratedPlan | null) => void
@@ -19,9 +30,10 @@ interface SessionValue extends SessionState {
   reset: () => void
 }
 
-const STORAGE_KEY = 'archetype-ai.session.v1'
+const STORAGE_KEY = 'archetype-ai.session.v2'
 
 const emptyState: SessionState = {
+  onboarding: emptyOnboarding,
   result: null,
   futureSelf: null,
   plan: null,
@@ -34,7 +46,8 @@ function load(): SessionState {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return emptyState
-    return { ...emptyState, ...(JSON.parse(raw) as Partial<SessionState>) }
+    const parsed = JSON.parse(raw) as Partial<SessionState>
+    return { ...emptyState, ...parsed, onboarding: { ...emptyOnboarding, ...(parsed.onboarding ?? {}) } }
   } catch {
     return emptyState
   }
@@ -53,6 +66,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [state])
 
+  const updateOnboarding = useCallback((patch: Partial<OnboardingAnswers>) => {
+    setState((s) => ({ ...s, onboarding: { ...s.onboarding, ...patch } }))
+  }, [])
   const setResult = useCallback((result: ArchetypeResult | null) => {
     setState((s) => ({ ...s, result, futureSelf: null, plan: null, completedPresence: [] }))
   }, [])
@@ -73,11 +89,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         : [...s.completedPresence, id],
     }))
   }, [])
-  const reset = useCallback(() => setState(emptyState), [])
+  // Reset clears the result chain but keeps the visitor's name and onboarding answers.
+  const reset = useCallback(() => setState((s) => ({ ...emptyState, onboarding: s.onboarding })), [])
 
   const value = useMemo<SessionValue>(
-    () => ({ ...state, setResult, setFutureSelf, setPlan, setModeledOn, togglePresenceComplete, reset }),
-    [state, setResult, setFutureSelf, setPlan, setModeledOn, togglePresenceComplete, reset],
+    () => ({ ...state, updateOnboarding, setResult, setFutureSelf, setPlan, setModeledOn, togglePresenceComplete, reset }),
+    [state, updateOnboarding, setResult, setFutureSelf, setPlan, setModeledOn, togglePresenceComplete, reset],
   )
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>

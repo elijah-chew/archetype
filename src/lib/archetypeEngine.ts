@@ -113,9 +113,15 @@ function buildResult(
 /** Score a free-text self description against each archetype's signal vocabulary. */
 export async function analyzeDescription(text: string): Promise<ArchetypeResult> {
   await wait(THINK_MS)
+  const scores = keywordScores(text)
+  const seed = hashString(text.trim().toLowerCase())
+  const ranked = rankArchetypes(scores, seed)
+  return buildResult(ranked, seed, { kind: 'description', text })
+}
+
+function keywordScores(text: string): Record<ArchetypeId, number> {
   const normalized = ` ${text.toLowerCase().replace(/[^a-z0-9\s'-]/g, ' ')} `
   const scores = Object.fromEntries(archetypes.map((a) => [a.id, 0])) as Record<ArchetypeId, number>
-
   for (const archetype of archetypes) {
     for (const signal of archetype.signals) {
       const pattern = new RegExp(`\\b${signal.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}`, 'g')
@@ -124,20 +130,25 @@ export async function analyzeDescription(text: string): Promise<ArchetypeResult>
       scores[archetype.id] += hits * (signal.includes(' ') ? 2 : 1)
     }
   }
-
-  const seed = hashString(text.trim().toLowerCase())
-  const ranked = rankArchetypes(scores, seed)
-  return buildResult(ranked, seed, { kind: 'description', text })
+  return scores
 }
 
-/** Count archetype votes from the short test; first-choice ties resolve toward earlier answers. */
-export async function scoreTest(answers: ArchetypeId[]): Promise<ArchetypeResult> {
+/**
+ * Count archetype votes from the test; first-choice ties resolve toward earlier answers.
+ * An optional self-description adds keyword evidence on top of the votes.
+ */
+export async function scoreTest(answers: ArchetypeId[], description = ''): Promise<ArchetypeResult> {
   await wait(THINK_MS)
   const scores = Object.fromEntries(archetypes.map((a) => [a.id, 0])) as Record<ArchetypeId, number>
   answers.forEach((id, index) => {
     scores[id] += 1 + (answers.length - index) * 0.01
   })
-  const seed = hashString(answers.join('|'))
+  if (description.trim()) {
+    // A keyword hit is worth less than a chosen answer, but enough to break near-ties.
+    const kw = keywordScores(description)
+    for (const a of archetypes) scores[a.id] += kw[a.id] * 0.5
+  }
+  const seed = hashString(`${answers.join('|')}::${description.trim().toLowerCase()}`)
   const ranked = rankArchetypes(scores, seed)
   return buildResult(ranked, seed, { kind: 'test', answers })
 }

@@ -86,6 +86,34 @@ select {
   animation-delay: 600ms;
 }
 
+/* Onboarding / test steps slide in from the direction of travel. */
+@keyframes step-forward {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes step-back {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-step-forward {
+  animation: step-forward 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-step-back {
+  animation: step-back 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Elements waiting for an in-view reveal stay invisible until the animation class is applied. */
 .reveal-pending {
   opacity: 0;
@@ -158,6 +186,8 @@ select {
   }
   .animate-fade-up,
   .animate-fade-down,
+  .animate-step-forward,
+  .animate-step-back,
   .animate-grow-x,
   .animate-fill-bar,
   .animate-soft-pulse {
