@@ -87,9 +87,9 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
             style={{ transform: characterTransform, transformStyle: 'preserve-3d' }}
             aria-live="polite"
           >
-            {/* Renders ship with generous cream margins; scale up so the figure reads larger in-frame. */}
-            <div className="absolute inset-0 flex items-end justify-center pointer-events-none">
-              <div className="relative w-full h-[108%] origin-bottom scale-[1.44] sm:scale-[1.48] lg:scale-[1.54]">
+            {/* Inset frame + modest scale: larger than raw contain, but clipped inside the square. */}
+            <div className="absolute inset-x-[4%] top-[10%] bottom-[5%] pointer-events-none">
+              <div className="relative h-full w-full origin-bottom scale-[1.14] sm:scale-[1.18] lg:scale-[1.22]">
                 {showAll.map((id) => {
                   const a = getArchetype(id)
                   const isActive = id === activeId
@@ -101,7 +101,7 @@ export default function HeroStage({ pinned, onChange }: HeroStageProps) {
                       blend={false}
                       loading={id === heroArchetypeIds[0] ? 'eager' : 'lazy'}
                       className={cx(
-                        'absolute inset-0 w-full h-full object-contain object-bottom transition-opacity duration-700 ease-out',
+                        'absolute inset-0 h-full w-full object-contain object-bottom transition-opacity duration-700 ease-out',
                         isActive ? 'opacity-100' : 'opacity-0',
                       )}
                     />
