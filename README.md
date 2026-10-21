@@ -49,7 +49,7 @@ public/characters/ 3D-style archetype character renders (used everywhere except 
 
 The hero card renders a live Three.js figure (`src/components/hero3d/`). Its head turns toward the cursor, its pupils track, its arms bob, it blinks, and it looks around on its own after 3.5 s idle. The scene is loaded with a dynamic import so `three` is a separate chunk, and the card falls back to the JPEG renders when WebGL is unavailable.
 
-- **Procedural figure (default).** `buildCharacter(spec)` assembles a stylised character from primitives using a `CharacterSpec` (skin, hair, hairstyle, outfit colours, accent, prop) from `src/data/characterSpecs.ts`. Edit a spec to restyle an archetype; no assets needed.
+- **Procedural figure (default).** `buildCharacter(spec)` assembles a stylised quarter-zip character (light collar, side-swept hair, slim trousers, dark shoes, a laptop under one arm) from primitives using a `CharacterSpec` (skin, hair, hairstyle, outfit colours, accent, prop) from `src/data/characterSpecs.ts`. Edit a spec to restyle an archetype; no assets needed.
 - **Sculpted GLB (optional).** Set `model` on an archetype in `src/data/archetypes.ts` to a GLB URL and the hero loads it instead (`loadGlbCharacter`). Name nodes `Head`, `Eye_L`, `Eye_R`, `Arm_L`, `Arm_R` to get head, pupil and arm tracking; unnamed models still turn and bob as a whole. If the load fails, the procedural figure is used.
 
 ### Routes
