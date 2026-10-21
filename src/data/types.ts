@@ -69,7 +69,10 @@ export interface Archetype {
    * Nodes named `Head`, `Eye_L`, `Eye_R`, `Arm_L`, `Arm_R` get head/eye/arm tracking.
    */
   model?: string
-  /** Pills shown around the character in the hero. */
+  /**
+   * Pills on the hero character: brand, companies, degree, and one trait
+   * (in that order), tied to the archetype’s example people.
+   */
   heroPills: AnchoredPill[]
   /** Keywords used by the mock analyzer to score free-text descriptions. */
   signals: string[]
